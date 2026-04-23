@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState, useMemo } from 'react';
+import cn from 'classnames';
 import { UserWarning } from './UserWarning';
 import { createTodo, deleteTodo, getTodos, USER_ID } from './api/todos';
 import { Todo } from './types/Todo';
@@ -131,7 +132,9 @@ export const App: React.FC = () => {
         <header className="todoapp__header">
           <button
             type="button"
-            className={`todoapp__toggle-all ${isAllCompleted ? 'active' : ''}`}
+            className={cn('todoapp__toggle-all', {
+              active: isAllCompleted,
+            })}
             data-cy="ToggleAllButton"
           />
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { Status } from '../types/Enum';
 
 interface Props {
@@ -26,7 +27,9 @@ export const Footer: React.FC<Props> = ({
         <a
           key={status}
           href={`#/${status === Status.All ? '' : status}`}
-          className={`filter__link ${currentFilter === status ? 'selected' : ''}`}
+          className={cn('filter__link', {
+            selected: currentFilter === status,
+          })}
           data-cy={`FilterLink${status.charAt(0).toUpperCase() + status.slice(1)}`}
           onClick={() => onFilterChange(status)}
         >
