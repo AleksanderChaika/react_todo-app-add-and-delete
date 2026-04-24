@@ -79,13 +79,14 @@ export const App: React.FC = () => {
   const removeTodo = (todoId: number) => {
     setLoadingIds(prev => [...prev, todoId]);
 
-    deleteTodo(todoId)
+    return deleteTodo(todoId)
       .then(() => {
         setTodos(prev => prev.filter(todo => todo.id !== todoId));
       })
-      .catch(() => {
+      .catch(error => {
         setErrorMessage(ErrorMessage.Delete);
         setTimeout(() => setErrorMessage(ErrorMessage.None), 3000);
+        throw error;
       })
       .finally(() => {
         setLoadingIds(prev => prev.filter(id => id !== todoId));
@@ -98,8 +99,9 @@ export const App: React.FC = () => {
 
   const clearCompleted = () => {
     const completedTodos = todos.filter(todo => todo.completed);
+    const deletePromises = completedTodos.map(todo => removeTodo(todo.id));
 
-    completedTodos.forEach(todo => removeTodo(todo.id));
+    Promise.allSettled(deletePromises);
   };
 
   const visibleTodos = useMemo(() => {
